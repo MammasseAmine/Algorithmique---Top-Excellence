@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institut Top Excellence - Formation Algorithmique</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&family=Space+Grotesk:wght@400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primaire: #6366f1;
+            --secondaire: #8b5cf6;
+            --accent: #06b6d4;
+            --fond-sombre: #0f0f23;
+            --fond-carte: #1a1a2e;
+            --fond-secondaire: #16213e;
+            --texte-primaire: #e2e8f0;
+            --texte-secondaire: #94a3b8;
+            --bordure: #334155;
+            --succes: #22c55e;
+            --avertissement: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.6;
+            background: var(--fond-sombre);
+            color: var(--texte-primaire);
+            overflow-x: hidden;
+        }
+        
+        .conteneur {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Arrière-plan animé */
+        .arriere-plan-anime {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+        }
+        
+        .motif-code {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.02;
+            background-image: 
+                linear-gradient(90deg, var(--primaire) 1px, transparent 1px),
+                linear-gradient(var(--primaire) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: mouvementCode 20s linear infinite;
+        }
+        
+        @keyframes mouvementCode {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(20px) translateY(20px); }
+        }
+        
+        /* En-tête */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--bordure);
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primaire);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo::before {
+            content: '{ }';
+            color: var(--accent);
+            animation: pulsation 2s infinite;
+        }
+        
+        @keyframes pulsation {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .liens-nav {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .liens-nav a {
+            color: var(--texte-secondaire);
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        
+        .liens-nav a:hover {
+            color: var(--primaire);
+            border-color: var(--primaire);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        /* Section Principale */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 100px 0 50px;
+        }
+        
+        .visuel-algorithme {
+            background: var(--fond-carte);
+            border: 1px solid var(--bordure);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .visuel-algorithme::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primaire), var(--secondaire), var(--accent));
+        }
+        
+        .entete-code {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--bordure);
+        }
+        
+        .point-code {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .point-rouge { background: var(--danger); }
+        .point-jaune { background: var(--avertissement); }
+        .point-vert { background: var(--succes); }
+        
+        .titre-code {
+            font-family: 'Fira Code', monospace;
+            color: var(--texte-secondaire);
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+        
+        .code-algorithme {
+            font-family: 'Fira Code', monospace;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .ligne-code {
+            margin: 0.5rem 0;
+            opacity: 0;
+            animation: apparitionCode 0.8s ease forwards;
+            position: relative;
+        }
+        
+        @keyframes apparitionCode {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .mot-cle { color: var(--primaire); font-weight: 600; }
+        .fonction { color: var(--accent); }
+        .chaine { color: var(--succes); }
+        .commentaire { color: var(--texte-secondaire); font-style: italic; }
+        .nombre { color: var(--avertissement); }
+        
+        .titre-principal {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primaire), var(--secondaire), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: lueurTitre 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes lueurTitre {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.2); }
+        }
+        
+        .sous-titre-principal {
+            font-size: 1.3rem;
+            color: var(--texte-secondaire);
+            margin-bottom: 2rem;
+            font-family: 'Fira Code', monospace;
+        }
+        
+        .bouton-principal {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primaire), var(--secondaire));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bouton-principal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .bouton-principal:hover::before {
+            left: 100%;
+        }
+        
+        .bouton-principal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Section Atouts */
+        .atouts {
+            padding: 6rem 0;
+            background: var(--fond-secondaire);
+        }
+        
+        .titre-section {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--texte-primaire);
+            font-family: 'Fira Code', monospace;
+            position: relative;
+        }
+        
+        .titre-section::before {
+            content: '//';
+            position: absolute;
+            left: -40px;
+            color: var(--primaire);
+        }
+        
+        .grille-atouts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .carte-atout {
+            background: var(--fond-carte);
+            border: 1px solid var(--bordure);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carte-atout::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primaire), var(--secondaire));
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+        }
+        
+        .carte-atout:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .carte-atout:hover {
+            transform: translateY(-5px);
+            border-color: var(--primaire);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .icone-atout {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .titre-atout {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primaire);
+            font-family: 'Fira Code', monospace;
+        }
+        
+        .description-atout {
+            color: var(--texte-secondaire);
+            line-height: 1.7;
+        }
+        
+        /* Section Programme */
+        .programme {
+            padding: 6rem 0;
+            background: var(--fond-sombre);
+        }
+        
+        .conteneur-programme {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .chapitre {
+            background: var(--fond-carte);
+            border: 1px solid var(--bordure);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .chapitre:hover {
+            border-color: var(--primaire);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .entete-chapitre {
+            background: linear-gradient(135deg, var(--primaire), var(--secondaire));
+            color: white;
+            padding: 1.5rem 2rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Statistiques */
+        .statistiques {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .carte-stat {
+            background: var(--fond-carte);
+            border: 1px solid var(--bordure);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carte-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primaire), var(--accent));
+        }
+        
+        .carte-stat:hover {
+            border-color: var(--primaire);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+        
+        .nombre-stat {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primaire);
+            font-family: 'Fira Code', monospace;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .etiquette-stat {
+            color: var(--texte-secondaire);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Section Contact */
+        .contact {
+            padding: 6rem 0;
+            background: var(--fond-secondaire);
+            text-align: center;
+        }
+        
+        .grille-contact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .carte-contact {
+            background: var(--fond-carte);
+            border: 1px solid var(--bordure);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .carte-contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondaire));
+        }
+        
+        .carte-contact:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(6, 182, 212, 0.2);
+        }
+        
+        .icone-contact {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .titre-contact {
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: 'Fira Code', monospace;
+        }
+        
+        .info-contact {
+            color: var(--texte-secondaire);
+        }
+        
+        /* Pied de page */
+        footer {
+            background: var(--fond-sombre);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--bordure);
+        }
+        
+        footer p {
+            color: var(--texte-secondaire);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        .fondu-apparition {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .fondu-apparition.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .titre-principal {
+                font-size: 2.5rem;
+            }
+            
+            .liens-nav {
+                display: none;
+            }
+            
+            .visuel-algorithme {
+                padding: 1.5rem;
+            }
+            
+            .titre-section::before {
+                display: none;
+            }
+            
+            .grille-atouts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="arriere-plan-anime"></div>
+    <div class="motif-code"></div>
+    
+    <header>
+        <nav class="conteneur">
+            <div class="logo">Top Excellence()</div>
+            <ul class="liens-nav">
+                <li><a href="#accueil">accueil()</a></li>
+                <li><a href="#atouts">atouts[]</a></li>
+                <li><a href="#programme">programme{}</a></li>
+                <li><a href="#contact">contact()</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="accueil" class="hero">
+        <div class="conteneur">
+            <div class="visuel-algorithme">
+                <div class="entete-code">
+                    <div class="point-code point-rouge"></div>
+                    <div class="point-code point-jaune"></div>
+                    <div class="point-code point-vert"></div>
+                    <div class="titre-code">algorithme.txt</div>
+                </div>
+                <div class="code-algorithme">
+                    <div class="ligne-code" style="animation-delay: 0.1s">
+                        <span class="mot-cle">ALGORITHME</span> <span class="fonction">apprendre_algorithme</span>
+                    </div>
+                    <div class="ligne-code" style="animation-delay: 0.3s">
+                        <span class="mot-cle">DÉBUT</span>
+                    </div>
+                    <div class="ligne-code" style="animation-delay: 0.5s">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="commentaire">// Initialiser les connaissances</span>
+                    </div>
+                    <div class="ligne-code" style="animation-delay: 0.7s">
+                        &nbsp;&nbsp;&nbsp;&nbsp;compétences ← <span class="chaine">"bases algorithmiques"</span>
+                    </div>
+                    <div class="ligne-code" style="animation-delay: 0.9s">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="mot-cle">TANT QUE</span> compétences ≠ <span class="chaine">"expert"</span> <span class="mot-cle">FAIRE</span>
+                    </div>
+                    <div class="ligne-code" style="animation-delay: 1.1s">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compétences ← <span class="fonction">pratiquer</span>(compétences)
+                    </div>
+                    <div class="ligne-code" style="animation-delay: 1.3s">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="mot-cle">FIN TANT QUE</span>
+                    </div>
+                     <div class="ligne-code" style="animation-delay: 1.5s">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="mot-cle">RETOURNER</span> <span class="chaine">"Maîtrise acquise !"</span>
+                    </div>
+                    <div class="ligne-code" style="animation-delay: 1.7s">
+                        <span class="mot-cle">FIN</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h1 class="titre-principal">Maîtrisez l'Algorithmique</h1>
+            <p class="sous-titre-principal">// De la logique aux structures de données complexes</p>
+            <a href="#contact" class="bouton-principal">commencerLaFormation()</a>
+        </div>
+    </section>
+
+    <section id="atouts" class="atouts">
+        <div class="conteneur">
+            <h2 class="titre-section fondu-apparition">Pourquoi Notre Formation ?</h2>
+            <div class="grille-atouts">
+                <div class="carte-atout fondu-apparition">
+                    <div class="icone-atout">🧠</div>
+                    <h3 class="titre-atout">logique.developper()</h3>
+                    <p class="description-atout">Développement de la pensée logique et des capacités de résolution de problèmes</p>
+                </div>
+                <div class="carte-atout fondu-apparition">
+                    <div class="icone-atout">⚡</div>
+                    <h3 class="titre-atout">efficacite.optimiser()</h3>
+                    <p class="description-atout">Apprentissage des techniques d'optimisation et d'analyse de complexité</p>
+                </div>
+                <div class="carte-atout fondu-apparition">
+                    <div class="icone-atout">🔧</div>
+                    <h3 class="titre-atout">outils.maitriser()</h3>
+                    <p class="description-atout">Maîtrise des outils de représentation : pseudo-code et organigrammes</p>
+                </div>
+                <div class="carte-atout fondu-apparition">
+                    <div class="icone-atout">📊</div>
+                    <h3 class="titre-atout">structures.apprendre()</h3>
+                    <p class="description-atout">Compréhension des structures de données et de contrôle fondamentales</p>
+                </div>
+                <div class="carte-atout fondu-apparition">
+                    <div class="icone-atout">🎯</div>
+                    <h3 class="titre-atout">pratique.appliquer()</h3>
+                    <p class="description-atout">Exercices pratiques avec exemples concrets et projets guidés</p>
+                </div>
+                <div class="carte-atout fondu-apparition">
+                    <div class="icone-atout">🚀</div>
+                    <h3 class="titre-atout">avance.debloquer()</h3>
+                    <p class="description-atout">Préparation aux concepts avancés de programmation et développement</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="programme" class="programme">
+        <div class="conteneur">
+            <h2 class="titre-section fondu-apparition">Programme Détaillé</h2>
+            <div class="conteneur-programme">
+                
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>1. Introduction générale</span>
+                    </div>
+                </div>
+
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>2. Concepts fondamentaux</span>
+                    </div>
+                </div>
+
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>3. Les types de données</span>
+                    </div>
+                </div>
+
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>4. Les structures séquentielles</span>
+                    </div>
+                </div>
+
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>5. Structures conditionnelles</span>
+                    </div>
+                </div>
+
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>6. Structures itératives</span>
+                    </div>
+                </div>
+
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>7. Tableaux (structures de données simples)</span>
+                    </div>
+                </div>
+
+                <div class="chapitre fondu-apparition">
+                    <div class="entete-chapitre">
+                        <span>8. Fonctions et Procédures</span>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="statistiques fondu-apparition">
+                <div class="carte-stat">
+                    <span class="nombre-stat">30h</span>
+                    <p class="etiquette-stat">Formation Complète</p>
+                </div>
+                <div class="carte-stat">
+                    <span class="nombre-stat">8</span>
+                    <p class="etiquette-stat">Modules Détaillés</p>
+                </div>
+                <div class="carte-stat">
+                    <span class="nombre-stat">10+</span>
+                    <p class="etiquette-stat">Exercices Pratiques</p>
+                </div>
+                <div class="carte-stat">
+                    <span class="nombre-stat">100%</span>
+                    <p class="etiquette-stat">Succès Garanti</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="conteneur">
+            <h2 class="titre-section fondu-apparition">Commencez Votre Apprentissage</h2>
+            <p class="fondu-apparition" style="color: var(--texte-secondaire); font-family: 'Fira Code', monospace;">
+                <span class="mot-cle">si</span> (motivation == <span class="chaine">"elevee"</span>) { <span class="fonction">nousContacter</span>(); }
+            </p>
+            
+            <div class="grille-contact">
+                <div class="carte-contact fondu-apparition">
+                    <div class="icone-contact">📞</div>
+                    <h3 class="titre-contact">telephone.appeler()</h3>
+                    <p class="info-contact">0770 86 56 34</p>
+                </div>
+                <div class="carte-contact fondu-apparition">
+                    <div class="icone-contact">✉️</div>
+                    <h3 class="titre-contact">email.envoyer()</h3>
+                    <p class="info-contact">contact@groupetopexcellence.com</p>
+                </div>
+                <div class="carte-contact fondu-apparition">
+                    <div class="icone-contact">📍</div>
+                    <h3 class="titre-contact">lieu.trouver()</h3>
+                    <p class="info-contact">Résidence Bois Sacré, Boulevard Colonel Amirouche, Bejaïa, Algeria</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem;">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdAyRl2Iz4eCU3wInMpnLImQtVziQE-8PXXoacu1Cqp0LAa3A/viewform?usp=dialog" class="bouton-principal fondu-apparition">
+                    sInscrire()
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="conteneur">
+            <p>© 2025 Institut Top Excellence. Tous droits réservés. | Propulsé par Algorithme.js</p>
+        </div>
+    </footer>
+
+    <script>
+        // Défilement fluide pour la navigation
+        document.querySelectorAll('a[href^="#"]').forEach(ancre => {
+            ancre.addEventListener('click', function (e) {
+                e.preventDefault();
+                const cible = document.querySelector(this.getAttribute('href'));
+                if (cible) {
+                    cible.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animations au défilement
+        function gererAnimationsDefilement() {
+            const elements = document.querySelectorAll('.fondu-apparition');
+            const hauteurFenetre = window.innerHeight;
+            
+            elements.forEach(element => {
+                const hautElement = element.getBoundingClientRect().top;
+                if (hautElement < hauteurFenetre - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Arrière-plan de l'en-tête au défilement
+        function gererDefilementEntete() {
+            const entete = document.querySelector('header');
+            if (window.scrollY > 100) {
+                entete.style.background = 'rgba(15, 15, 35, 0.98)';
+            } else {
+                entete.style.background = 'rgba(15, 15, 35, 0.95)';
+            }
+        }
+
+        // Initialiser les animations et les écouteurs d'événements
+        document.addEventListener('DOMContentLoaded', function() {
+            gererAnimationsDefilement();
+            
+            window.addEventListener('scroll', function() {
+                gererAnimationsDefilement();
+                gererDefilementEntete();
+            });
+        });
+
+        // Ajouter un effet de saisie de code dynamique
+        function saisirCode() {
+            const lignesCode = document.querySelectorAll('.ligne-code');
+            lignesCode.forEach((ligne, index) => {
+                ligne.style.animationDelay = `${index * 0.2}s`;
+            });
+        }
+
+        // Initialiser au chargement de la page
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                saisirCode();
+            }, 100);
+        });
+
+        // Ajouter un effet de clic pour les boutons
+        document.querySelectorAll('.bouton-principal').forEach(bouton => {
+            bouton.addEventListener('click', function(e) {
+                // Créer un effet d'ondulation
+                const ondulation = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const taille = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - taille / 2;
+                const y = e.clientY - rect.top - taille / 2;
+                
+                ondulation.style.width = ondulation.style.height = taille + 'px';
+                ondulation.style.left = x + 'px';
+                ondulation.style.top = y + 'px';
+                ondulation.style.position = 'absolute';
+                ondulation.style.borderRadius = '50%';
+                ondulation.style.background = 'rgba(255, 255, 255, 0.6)';
+                ondulation.style.transform = 'scale(0)';
+                ondulation.style.animation = 'ondulation 0.6s linear';
+                ondulation.style.pointerEvents = 'none';
+                
+                this.appendChild(ondulation);
+                
+                setTimeout(() => {
+                    ondulation.remove();
+                }, 600);
+            });
+        });
+
+        // Ajouter l'animation d'ondulation via CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ondulation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            .bouton-principal {
+                position: relative;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
